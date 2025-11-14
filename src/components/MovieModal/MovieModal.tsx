@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import css from './MovieModal.module.css';
-import type { Movie } from '../../types/movie';
+import type { Movie } from '../../types/movie.ts';
 
 interface MovieModalProps {
   movie: Movie;
@@ -9,6 +9,8 @@ interface MovieModalProps {
 }
 
 const modalRoot = document.getElementById('modal-root') || document.body;
+
+const PLACEHOLDER_URL = 'placeholder.svg';
 
 export default function MovieModal({ movie, onClose }: MovieModalProps) {
   useEffect(() => {
@@ -29,6 +31,14 @@ export default function MovieModal({ movie, onClose }: MovieModalProps) {
     if (e.target === e.currentTarget) onClose();
   };
 
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = PLACEHOLDER_URL;
+  };
+
+  const imageUrl = movie.backdrop_path
+    ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
+    : PLACEHOLDER_URL;
+
   return createPortal(
     <div className={css.backdrop} role="dialog" aria-modal="true" onClick={handleBackdropClick}>
       <div className={css.modal}>
@@ -37,9 +47,10 @@ export default function MovieModal({ movie, onClose }: MovieModalProps) {
         </button>
 
         <img
-          src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+          src={imageUrl}
           alt={movie.title}
           className={css.image}
+          onError={handleImageError}
         />
 
         <div className={css.content}>

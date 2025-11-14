@@ -2,14 +2,14 @@ import { useState, useCallback, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import ReactPaginate from 'react-paginate';
 import css from './App.module.css';
-import SearchBar from '../SearchBar/SearchBar';
-import MovieGrid from '../MovieGrid/MovieGrid';
-import Loader from '../Loader/Loader';
-import ErrorMessage from '../ErrorMessage/ErrorMessage';
-import MovieModal from '../MovieModal/MovieModal';
+import SearchBar from '../SearchBar/SearchBar.tsx';
+import MovieGrid from '../MovieGrid/MovieGrid.tsx';
+import Loader from '../Loader/Loader.tsx';
+import ErrorMessage from '../ErrorMessage/ErrorMessage.tsx';
+import MovieModal from '../MovieModal/MovieModal.tsx';
 import toast from 'react-hot-toast';
-import { fetchMovies, type TMDBSearchResponse } from '../../services/movieService';
-import type { Movie } from '../../types/movie';
+import { fetchMovies, type TMDBSearchResponse } from '../../services/movieService.ts';
+import type { Movie } from '../../types/movie.ts';
 
 export default function App() {
   const [query, setQuery] = useState('');
@@ -65,8 +65,6 @@ export default function App() {
 
       {canShowGrid && (
         <>
-          <MovieGrid movies={movies} onSelect={handleSelectMovie} />
-
           {totalPages > 1 && (
             <ReactPaginate
               pageCount={totalPages}
@@ -80,6 +78,8 @@ export default function App() {
               previousLabel="←"
             />
           )}
+
+          <MovieGrid movies={movies} onSelect={handleSelectMovie} />
         </>
       )}
 
